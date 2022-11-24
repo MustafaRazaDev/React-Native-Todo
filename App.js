@@ -1,11 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {React, useState} from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
+import { TextInput } from "react-native-paper";
 
 export default function App() {
+  const [text, setText] = useState("");
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <TextInput
+      label="Enter Todo"
+      value={text}
+      style={styles.TodoText}
+      mode="outlined"
+      onChangeText={text => setText(text)}
+    />
     </View>
   );
 }
@@ -13,8 +22,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
+  TodoText:{
+    width: 350,
+    height: 50,
+    position: 'absolute',
+    top: 200,
+    left: 20,
+  }
 });
