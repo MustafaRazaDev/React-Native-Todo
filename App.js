@@ -2,7 +2,7 @@ import { React, useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { collection, addDoc, getDocs} from "firebase/firestore";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, getFirestore, updateDoc } from "firebase/firestore";
 import { db } from "./db";
 import Trash from "./trash.png";
 import Edit from "./edit.png";
@@ -10,6 +10,7 @@ import Edit from "./edit.png";
 export default function App() {
   const [text, setText] = useState("");
   const [todo, setTodo] = useState([]);
+  const [updatedText, setUpdatedText] = useState('');
 
   async function DataAddHandle() {
     if (text == "" || text == null) {
@@ -45,10 +46,19 @@ export default function App() {
   async function Delete(id) {
     await deleteDoc(doc(db, "users", id));
   }
-
-  function edit() {
-    // await deleteDoc(doc(db, "cities", "DC"));
-    alert("You Clicked On Edit");
+  
+  function edit(id) {
+    alert('ustaad mujha update karna ka shukriya')
+    const docRef = doc(db, "users", id);
+    const data = {
+      name: "For now i am updating todos manually"
+    }
+    updateDoc(docRef, data)
+    
+    .catch(error => {
+      alert('Error Updating Todo', error);
+      
+    })
   }
   return (
     <View style={styles.container}>
@@ -73,7 +83,7 @@ export default function App() {
           <View style={styles.todoBox}>
             <Text style={styles.todo}>{Item.name}</Text>
             <View style={styles.imgContainer}>
-            <TouchableOpacity onPress={edit}>
+            <TouchableOpacity onPress={() => edit(Item.id)}>
               <Image style={styles.EditImg} source={Edit} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => Delete(Item.id)}>
